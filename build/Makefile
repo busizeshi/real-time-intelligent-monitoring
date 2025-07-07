@@ -150,6 +150,33 @@ src/config.c.s:
 	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/config.c.s
 .PHONY : src/config.c.s
 
+src/frame_capturer.o: src/frame_capturer.cpp.o
+
+.PHONY : src/frame_capturer.o
+
+# target to build an object file
+src/frame_capturer.cpp.o:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o
+.PHONY : src/frame_capturer.cpp.o
+
+src/frame_capturer.i: src/frame_capturer.cpp.i
+
+.PHONY : src/frame_capturer.i
+
+# target to preprocess a source file
+src/frame_capturer.cpp.i:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.i
+.PHONY : src/frame_capturer.cpp.i
+
+src/frame_capturer.s: src/frame_capturer.cpp.s
+
+.PHONY : src/frame_capturer.s
+
+# target to generate assembly for a file
+src/frame_capturer.cpp.s:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.s
+.PHONY : src/frame_capturer.cpp.s
+
 src/main.o: src/main.cpp.o
 
 .PHONY : src/main.o
@@ -216,6 +243,9 @@ help:
 	@echo "... src/config.o"
 	@echo "... src/config.i"
 	@echo "... src/config.s"
+	@echo "... src/frame_capturer.o"
+	@echo "... src/frame_capturer.i"
+	@echo "... src/frame_capturer.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

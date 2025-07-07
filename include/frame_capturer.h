@@ -1,7 +1,3 @@
-/**
- * @file frame_capturer.h
- * @brief 封装瑞芯微isp摄像头类
- */
 #ifndef FRAME_CAPTURER_H
 #define FRAME_CAPTURER_H
 
@@ -26,6 +22,10 @@ struct CaptureConfig
     bool enable_aiq = false;
     std::string iq_files_path = iq_files;
     bool multi_ctx = false;
+
+    // 输出控制
+    int frame_count_to_save = -1; // -1表示不限制
+    std::string output_path;      // 如果为空，则不保存文件
 
     // 输出控制
     int frame_count_to_save = -1; // -1表示不限制

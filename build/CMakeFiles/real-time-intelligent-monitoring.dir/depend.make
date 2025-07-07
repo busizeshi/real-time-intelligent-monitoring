@@ -6,8 +6,48 @@ CMakeFiles/real-time-intelligent-monitoring.dir/src/config.c.o: ../src/config.c
 
 CMakeFiles/real-time-intelligent-monitoring.dir/src/thread_safe_pq.c.o: ../src/thread_safe_pq.c
 
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o: ../include/config.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o: ../include/frame_capturer.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o: ../include/thread_safe_pq.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_adec.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_aenc.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_ai.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_ao.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_api.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_buffer.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_common.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_event.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_move_detection.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_muxer.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_occlusion_detection.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_rga.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_vdec.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_venc.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_vi.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_vmix.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_vo.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o: ../src/frame_capturer.cpp
+
 CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o: ../include/config.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o: ../include/frame_capturer.h
 CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o: ../include/logger.h
 CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o: ../include/thread_safe_pq.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_adec.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_aenc.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_ai.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_ao.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_api.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_buffer.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_common.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_event.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_move_detection.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_muxer.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_occlusion_detection.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_rga.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_vdec.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_venc.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_vi.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_vmix.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o: ../rv1126/vi/include/rkmedia/rkmedia_vo.h
 CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o: ../src/main.cpp
 

@@ -28,6 +28,7 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
   "../include"
   )
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/jwd/development/real-time-intelligent-monitoring/src/frame_capturer.cpp" "/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o"
   "/home/jwd/development/real-time-intelligent-monitoring/src/main.cpp" "/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

@@ -81,9 +81,33 @@ CMakeFiles/real-time-intelligent-monitoring.dir/src/config.c.o.provides: CMakeFi
 CMakeFiles/real-time-intelligent-monitoring.dir/src/config.c.o.provides.build: CMakeFiles/real-time-intelligent-monitoring.dir/src/config.c.o
 
 
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o: CMakeFiles/real-time-intelligent-monitoring.dir/flags.make
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o: ../src/frame_capturer.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o"
+	/opt/atk-dlrv1126-toolchain/usr/bin/arm-linux-gnueabihf-g++ --sysroot=/opt/atk-dlrv1126-toolchain/arm-buildroot-linux-gnueabihf/sysroot  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o -c /home/jwd/development/real-time-intelligent-monitoring/src/frame_capturer.cpp
+
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.i"
+	/opt/atk-dlrv1126-toolchain/usr/bin/arm-linux-gnueabihf-g++ --sysroot=/opt/atk-dlrv1126-toolchain/arm-buildroot-linux-gnueabihf/sysroot $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jwd/development/real-time-intelligent-monitoring/src/frame_capturer.cpp > CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.i
+
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.s"
+	/opt/atk-dlrv1126-toolchain/usr/bin/arm-linux-gnueabihf-g++ --sysroot=/opt/atk-dlrv1126-toolchain/arm-buildroot-linux-gnueabihf/sysroot $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jwd/development/real-time-intelligent-monitoring/src/frame_capturer.cpp -o CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.s
+
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o.requires:
+
+.PHONY : CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o.requires
+
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o.provides: CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o.requires
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o.provides.build
+.PHONY : CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o.provides
+
+CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o.provides.build: CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o
+
+
 CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o: CMakeFiles/real-time-intelligent-monitoring.dir/flags.make
 CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o: ../src/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o"
 	/opt/atk-dlrv1126-toolchain/usr/bin/arm-linux-gnueabihf-g++ --sysroot=/opt/atk-dlrv1126-toolchain/arm-buildroot-linux-gnueabihf/sysroot  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o -c /home/jwd/development/real-time-intelligent-monitoring/src/main.cpp
 
 CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.i: cmake_force
@@ -107,7 +131,7 @@ CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o.provides.build: C
 
 CMakeFiles/real-time-intelligent-monitoring.dir/src/thread_safe_pq.c.o: CMakeFiles/real-time-intelligent-monitoring.dir/flags.make
 CMakeFiles/real-time-intelligent-monitoring.dir/src/thread_safe_pq.c.o: ../src/thread_safe_pq.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/real-time-intelligent-monitoring.dir/src/thread_safe_pq.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/real-time-intelligent-monitoring.dir/src/thread_safe_pq.c.o"
 	/opt/atk-dlrv1126-toolchain/usr/bin/arm-linux-gnueabihf-gcc --sysroot=/opt/atk-dlrv1126-toolchain/arm-buildroot-linux-gnueabihf/sysroot $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/real-time-intelligent-monitoring.dir/src/thread_safe_pq.c.o   -c /home/jwd/development/real-time-intelligent-monitoring/src/thread_safe_pq.c
 
 CMakeFiles/real-time-intelligent-monitoring.dir/src/thread_safe_pq.c.i: cmake_force
@@ -132,6 +156,7 @@ CMakeFiles/real-time-intelligent-monitoring.dir/src/thread_safe_pq.c.o.provides.
 # Object files for target real-time-intelligent-monitoring
 real__time__intelligent__monitoring_OBJECTS = \
 "CMakeFiles/real-time-intelligent-monitoring.dir/src/config.c.o" \
+"CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o" \
 "CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o" \
 "CMakeFiles/real-time-intelligent-monitoring.dir/src/thread_safe_pq.c.o"
 
@@ -139,11 +164,12 @@ real__time__intelligent__monitoring_OBJECTS = \
 real__time__intelligent__monitoring_EXTERNAL_OBJECTS =
 
 real-time-intelligent-monitoring: CMakeFiles/real-time-intelligent-monitoring.dir/src/config.c.o
+real-time-intelligent-monitoring: CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o
 real-time-intelligent-monitoring: CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o
 real-time-intelligent-monitoring: CMakeFiles/real-time-intelligent-monitoring.dir/src/thread_safe_pq.c.o
 real-time-intelligent-monitoring: CMakeFiles/real-time-intelligent-monitoring.dir/build.make
 real-time-intelligent-monitoring: CMakeFiles/real-time-intelligent-monitoring.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable real-time-intelligent-monitoring"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable real-time-intelligent-monitoring"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/real-time-intelligent-monitoring.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -152,6 +178,7 @@ CMakeFiles/real-time-intelligent-monitoring.dir/build: real-time-intelligent-mon
 .PHONY : CMakeFiles/real-time-intelligent-monitoring.dir/build
 
 CMakeFiles/real-time-intelligent-monitoring.dir/requires: CMakeFiles/real-time-intelligent-monitoring.dir/src/config.c.o.requires
+CMakeFiles/real-time-intelligent-monitoring.dir/requires: CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o.requires
 CMakeFiles/real-time-intelligent-monitoring.dir/requires: CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o.requires
 CMakeFiles/real-time-intelligent-monitoring.dir/requires: CMakeFiles/real-time-intelligent-monitoring.dir/src/thread_safe_pq.c.o.requires
 
