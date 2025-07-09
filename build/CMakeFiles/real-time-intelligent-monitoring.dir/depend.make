@@ -137,6 +137,7 @@ CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_queue.c.o: ../src/safe_
 
 CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cc.o: ../include/rkmedia_vi_venc.h
 CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cc.o: ../include/rknn_yolo.h
+CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cc.o: ../include/rtsp_push.h
 CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cc.o: ../include/safe_queue.h
 CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cc.o: ../rv1126/rknn/3rdparty/drm/include/libdrm/drm.h
 CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cc.o: ../rv1126/rknn/3rdparty/drm/include/libdrm/drm_fourcc.h

@@ -50,6 +50,14 @@ rga_func.h
 opencv2/opencv.hpp
 ../include/opencv2/opencv.hpp
 
+../include/rtsp_push.h
+stdint.h
+-
+libavformat/avformat.h
+-
+libavutil/time.h
+-
+
 ../include/safe_queue.h
 pthread.h
 -
@@ -343,6 +351,8 @@ rknn_yolo.h
 /home/jwd/development/real-time-intelligent-monitoring/src/rknn_yolo.h
 rkmedia_vi_venc.h
 /home/jwd/development/real-time-intelligent-monitoring/src/rkmedia_vi_venc.h
+rtsp_push.h
+/home/jwd/development/real-time-intelligent-monitoring/src/rtsp_push.h
 
 /home/jwd/development/real-time-intelligent-monitoring/src/rknn_yolo/postprocess.cc
 stdio.h

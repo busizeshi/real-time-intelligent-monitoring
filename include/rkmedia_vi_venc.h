@@ -25,6 +25,7 @@ extern RK_S32 s32CamId;
 extern RK_BOOL bMultictx;
 extern int fps;
 extern VI_CHN_ATTR_S vi_chn_attr;
+extern VENC_CHN_ATTR_S venc_chn_attr;
 
 /**
  * @brief RKMedia 初始化
@@ -37,8 +38,13 @@ int rkmedia_init();
 int mpi_vi_start();
 
 /**
- * @brief mpi停止采集摄像头数据，并释放资源
+ * @brief RKMedia 释放资源
  */
-int mpi_vi_stop();
+int rkmedia_deinit();
+
+/**
+ * @brief 启动编码
+ */
+int venc_start(bool quit, SafeQueue *queue);
 
 #endif
