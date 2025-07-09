@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cc.o"
   "CMakeFiles/real-time-intelligent-monitoring.dir/src/rkmedia_vi_venc.c.o"
+  "CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.o"
   "CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_queue.c.o"
   "CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/drm_func.c.o"
   "CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/postprocess.cc.o"

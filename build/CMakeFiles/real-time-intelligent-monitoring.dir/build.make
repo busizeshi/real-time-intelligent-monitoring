@@ -105,9 +105,33 @@ CMakeFiles/real-time-intelligent-monitoring.dir/src/rkmedia_vi_venc.c.o.provides
 CMakeFiles/real-time-intelligent-monitoring.dir/src/rkmedia_vi_venc.c.o.provides.build: CMakeFiles/real-time-intelligent-monitoring.dir/src/rkmedia_vi_venc.c.o
 
 
+CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.o: CMakeFiles/real-time-intelligent-monitoring.dir/flags.make
+CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.o: ../src/rtsp_push.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.o"
+	/opt/atk-dlrv1126-toolchain/usr/bin/arm-linux-gnueabihf-gcc --sysroot=/opt/atk-dlrv1126-toolchain/arm-buildroot-linux-gnueabihf/sysroot $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.o   -c /home/jwd/development/real-time-intelligent-monitoring/src/rtsp_push.c
+
+CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.i"
+	/opt/atk-dlrv1126-toolchain/usr/bin/arm-linux-gnueabihf-gcc --sysroot=/opt/atk-dlrv1126-toolchain/arm-buildroot-linux-gnueabihf/sysroot $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/jwd/development/real-time-intelligent-monitoring/src/rtsp_push.c > CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.i
+
+CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.s"
+	/opt/atk-dlrv1126-toolchain/usr/bin/arm-linux-gnueabihf-gcc --sysroot=/opt/atk-dlrv1126-toolchain/arm-buildroot-linux-gnueabihf/sysroot $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/jwd/development/real-time-intelligent-monitoring/src/rtsp_push.c -o CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.s
+
+CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.o.requires:
+
+.PHONY : CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.o.requires
+
+CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.o.provides: CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.o.requires
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.o.provides.build
+.PHONY : CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.o.provides
+
+CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.o.provides.build: CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.o
+
+
 CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_queue.c.o: CMakeFiles/real-time-intelligent-monitoring.dir/flags.make
 CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_queue.c.o: ../src/safe_queue.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_queue.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_queue.c.o"
 	/opt/atk-dlrv1126-toolchain/usr/bin/arm-linux-gnueabihf-gcc --sysroot=/opt/atk-dlrv1126-toolchain/arm-buildroot-linux-gnueabihf/sysroot $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_queue.c.o   -c /home/jwd/development/real-time-intelligent-monitoring/src/safe_queue.c
 
 CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_queue.c.i: cmake_force
@@ -131,7 +155,7 @@ CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_queue.c.o.provides.buil
 
 CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/drm_func.c.o: CMakeFiles/real-time-intelligent-monitoring.dir/flags.make
 CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/drm_func.c.o: ../src/rknn_yolo/drm_func.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/drm_func.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/drm_func.c.o"
 	/opt/atk-dlrv1126-toolchain/usr/bin/arm-linux-gnueabihf-gcc --sysroot=/opt/atk-dlrv1126-toolchain/arm-buildroot-linux-gnueabihf/sysroot $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/drm_func.c.o   -c /home/jwd/development/real-time-intelligent-monitoring/src/rknn_yolo/drm_func.c
 
 CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/drm_func.c.i: cmake_force
@@ -155,7 +179,7 @@ CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/drm_func.c.o.provi
 
 CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/postprocess.cc.o: CMakeFiles/real-time-intelligent-monitoring.dir/flags.make
 CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/postprocess.cc.o: ../src/rknn_yolo/postprocess.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/postprocess.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/postprocess.cc.o"
 	/opt/atk-dlrv1126-toolchain/usr/bin/arm-linux-gnueabihf-g++ --sysroot=/opt/atk-dlrv1126-toolchain/arm-buildroot-linux-gnueabihf/sysroot  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/postprocess.cc.o -c /home/jwd/development/real-time-intelligent-monitoring/src/rknn_yolo/postprocess.cc
 
 CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/postprocess.cc.i: cmake_force
@@ -179,7 +203,7 @@ CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/postprocess.cc.o.p
 
 CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/rga_func.c.o: CMakeFiles/real-time-intelligent-monitoring.dir/flags.make
 CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/rga_func.c.o: ../src/rknn_yolo/rga_func.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/rga_func.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/rga_func.c.o"
 	/opt/atk-dlrv1126-toolchain/usr/bin/arm-linux-gnueabihf-gcc --sysroot=/opt/atk-dlrv1126-toolchain/arm-buildroot-linux-gnueabihf/sysroot $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/rga_func.c.o   -c /home/jwd/development/real-time-intelligent-monitoring/src/rknn_yolo/rga_func.c
 
 CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/rga_func.c.i: cmake_force
@@ -203,7 +227,7 @@ CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/rga_func.c.o.provi
 
 CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/rknn_yolo.cc.o: CMakeFiles/real-time-intelligent-monitoring.dir/flags.make
 CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/rknn_yolo.cc.o: ../src/rknn_yolo/rknn_yolo.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/rknn_yolo.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/rknn_yolo.cc.o"
 	/opt/atk-dlrv1126-toolchain/usr/bin/arm-linux-gnueabihf-g++ --sysroot=/opt/atk-dlrv1126-toolchain/arm-buildroot-linux-gnueabihf/sysroot  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/rknn_yolo.cc.o -c /home/jwd/development/real-time-intelligent-monitoring/src/rknn_yolo/rknn_yolo.cc
 
 CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/rknn_yolo.cc.i: cmake_force
@@ -227,7 +251,7 @@ CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/rknn_yolo.cc.o.pro
 
 CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/stb_impl.cpp.o: CMakeFiles/real-time-intelligent-monitoring.dir/flags.make
 CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/stb_impl.cpp.o: ../src/rknn_yolo/stb_impl.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/stb_impl.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/stb_impl.cpp.o"
 	/opt/atk-dlrv1126-toolchain/usr/bin/arm-linux-gnueabihf-g++ --sysroot=/opt/atk-dlrv1126-toolchain/arm-buildroot-linux-gnueabihf/sysroot  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/stb_impl.cpp.o -c /home/jwd/development/real-time-intelligent-monitoring/src/rknn_yolo/stb_impl.cpp
 
 CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/stb_impl.cpp.i: cmake_force
@@ -253,6 +277,7 @@ CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/stb_impl.cpp.o.pro
 real__time__intelligent__monitoring_OBJECTS = \
 "CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cc.o" \
 "CMakeFiles/real-time-intelligent-monitoring.dir/src/rkmedia_vi_venc.c.o" \
+"CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.o" \
 "CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_queue.c.o" \
 "CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/drm_func.c.o" \
 "CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/postprocess.cc.o" \
@@ -265,6 +290,7 @@ real__time__intelligent__monitoring_EXTERNAL_OBJECTS =
 
 real-time-intelligent-monitoring: CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cc.o
 real-time-intelligent-monitoring: CMakeFiles/real-time-intelligent-monitoring.dir/src/rkmedia_vi_venc.c.o
+real-time-intelligent-monitoring: CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.o
 real-time-intelligent-monitoring: CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_queue.c.o
 real-time-intelligent-monitoring: CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/drm_func.c.o
 real-time-intelligent-monitoring: CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/postprocess.cc.o
@@ -274,7 +300,7 @@ real-time-intelligent-monitoring: CMakeFiles/real-time-intelligent-monitoring.di
 real-time-intelligent-monitoring: CMakeFiles/real-time-intelligent-monitoring.dir/build.make
 real-time-intelligent-monitoring: ../rv1126/rknn/librknn_api/lib/librknn_api.so
 real-time-intelligent-monitoring: CMakeFiles/real-time-intelligent-monitoring.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable real-time-intelligent-monitoring"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking CXX executable real-time-intelligent-monitoring"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/real-time-intelligent-monitoring.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -284,6 +310,7 @@ CMakeFiles/real-time-intelligent-monitoring.dir/build: real-time-intelligent-mon
 
 CMakeFiles/real-time-intelligent-monitoring.dir/requires: CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cc.o.requires
 CMakeFiles/real-time-intelligent-monitoring.dir/requires: CMakeFiles/real-time-intelligent-monitoring.dir/src/rkmedia_vi_venc.c.o.requires
+CMakeFiles/real-time-intelligent-monitoring.dir/requires: CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.o.requires
 CMakeFiles/real-time-intelligent-monitoring.dir/requires: CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_queue.c.o.requires
 CMakeFiles/real-time-intelligent-monitoring.dir/requires: CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/drm_func.c.o.requires
 CMakeFiles/real-time-intelligent-monitoring.dir/requires: CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/postprocess.cc.o.requires

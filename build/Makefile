@@ -358,6 +358,33 @@ src/rknn_yolo/stb_impl.cpp.s:
 	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/stb_impl.cpp.s
 .PHONY : src/rknn_yolo/stb_impl.cpp.s
 
+src/rtsp_push.o: src/rtsp_push.c.o
+
+.PHONY : src/rtsp_push.o
+
+# target to build an object file
+src/rtsp_push.c.o:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.o
+.PHONY : src/rtsp_push.c.o
+
+src/rtsp_push.i: src/rtsp_push.c.i
+
+.PHONY : src/rtsp_push.i
+
+# target to preprocess a source file
+src/rtsp_push.c.i:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.i
+.PHONY : src/rtsp_push.c.i
+
+src/rtsp_push.s: src/rtsp_push.c.s
+
+.PHONY : src/rtsp_push.s
+
+# target to generate assembly for a file
+src/rtsp_push.c.s:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.s
+.PHONY : src/rtsp_push.c.s
+
 src/safe_queue.o: src/safe_queue.c.o
 
 .PHONY : src/safe_queue.o
@@ -419,6 +446,9 @@ help:
 	@echo "... src/rknn_yolo/stb_impl.o"
 	@echo "... src/rknn_yolo/stb_impl.i"
 	@echo "... src/rknn_yolo/stb_impl.s"
+	@echo "... src/rtsp_push.o"
+	@echo "... src/rtsp_push.i"
+	@echo "... src/rtsp_push.s"
 	@echo "... src/safe_queue.o"
 	@echo "... src/safe_queue.i"
 	@echo "... src/safe_queue.s"

@@ -16,8 +16,8 @@ int rkmedia_init()
 {
     int ret = 0;
 
-    u32Width = 1280;
-    u32Height = 720;
+    u32Width = 1920;
+    u32Height = 1080;
     frameCnt = -1;
     pDeviceName = "rkispp_scale0";
     pIqfilesPath = "/etc/iqfiles/";

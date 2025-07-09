@@ -7,6 +7,9 @@ extern "C"
 
 bool quit;
 
+FILE *fp = fopen("../input.rgb", "w");
+RknnDetector detector("/userdata/rknn_yolov5_demo/model/rv1109_rv1126/yolov5s_relu_rv1109_rv1126_out_opt.rknn");
+
 static void sigterm_handler(int sig)
 {
     fprintf(stderr, "signal %d\n", sig);
@@ -15,9 +18,6 @@ static void sigterm_handler(int sig)
 
 void *GetMediaBuffer(void *args)
 {
-
-    SafeQueue *queue = (SafeQueue *)args;
-
     MEDIA_BUFFER mb = NULL;
 
     while (!quit)
@@ -40,12 +40,15 @@ void *GetMediaBuffer(void *args)
                RK_MPI_MB_GetModeID(mb), RK_MPI_MB_GetChannelID(mb),
                RK_MPI_MB_GetTimestamp(mb), stImageInfo.u32Width,
                stImageInfo.u32Height, stImageInfo.enImgType);
-        // detector.inferAndDraw((unsigned char *)RK_MPI_MB_GetPtr(mb), stImageInfo.u32Width,
-        //                       stImageInfo.u32Height);
-        unsigned char *tmp_data=(unsigned char*)malloc(stImageInfo.u32Width * stImageInfo.u32Height * 3);
+
+        unsigned char *tmp_data = (unsigned char *)malloc(stImageInfo.u32Width * stImageInfo.u32Height * 3);
         memcpy(tmp_data, RK_MPI_MB_GetPtr(mb), stImageInfo.u32Width * stImageInfo.u32Height * 3);
         RK_MPI_MB_ReleaseBuffer(mb);
-        safe_queue_enqueue(queue, tmp_data);
+
+        printf("正在检测......\n");
+        detector.inferAndDraw((unsigned char *)tmp_data, 1920, 1080);
+        fwrite(tmp_data, 1, 1920 * 1080 * 3, fp);
+        free(tmp_data);
     }
 
     return NULL;
@@ -54,13 +57,18 @@ void *GetMediaBuffer(void *args)
 int main(int argc, char *argv[])
 {
     signal(SIGINT, sigterm_handler);
+    // 目标检测初始化
+    if (!detector.isInitialized())
+    {
+        std::cerr << "ERROR: Failed to initialize RknnDetector." << std::endl;
+        return -1;
+    }
 
     // 初始化相关变量
     int ret = 0;
     quit = false;
     SafeQueue *queue = safe_queue_create(10);
     ret = rkmedia_init();
-    FILE *fp = fopen("../input.rgb", "w");
     void *img_data;
     if (ret)
     {
@@ -70,23 +78,11 @@ int main(int argc, char *argv[])
 
     printf("开始采集数据\n");
     pthread_t read_thread;
-    pthread_create(&read_thread, NULL, GetMediaBuffer, queue);
+    pthread_create(&read_thread, NULL, GetMediaBuffer, &detector);
     ret = mpi_vi_start();
 
-    RknnDetector detector("/userdata/rknn_yolov5_demo/model/rv1109_rv1126/yolov5s_relu_rv1109_rv1126_out_opt.rknn");
-    // 目标检测初始化
-    if (!detector.isInitialized())
-    {
-        std::cerr << "ERROR: Failed to initialize RknnDetector." << std::endl;
-        return -1;
-    }
     while (!quit)
     {
-        printf("正在检测......\n");
-        img_data = safe_queue_dequeue(queue);
-        detector.inferAndDraw((unsigned char *)img_data, 1280, 720);
-        fwrite(img_data, 1, 1280*720*3, fp);
-        free(img_data);
         usleep(500000);
     }
     safe_queue_destroy(queue);

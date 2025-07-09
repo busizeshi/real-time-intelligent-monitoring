@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_CHECK_C
   "/home/jwd/development/real-time-intelligent-monitoring/src/rkmedia_vi_venc.c" "/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles/real-time-intelligent-monitoring.dir/src/rkmedia_vi_venc.c.o"
   "/home/jwd/development/real-time-intelligent-monitoring/src/rknn_yolo/drm_func.c" "/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/drm_func.c.o"
   "/home/jwd/development/real-time-intelligent-monitoring/src/rknn_yolo/rga_func.c" "/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/rga_func.c.o"
+  "/home/jwd/development/real-time-intelligent-monitoring/src/rtsp_push.c" "/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.o"
   "/home/jwd/development/real-time-intelligent-monitoring/src/safe_queue.c" "/home/jwd/development/real-time-intelligent-monitoring/build/CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_queue.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
