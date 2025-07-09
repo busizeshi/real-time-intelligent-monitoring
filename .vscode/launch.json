@@ -1,0 +1,33 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(gdb) Remote Debug RV1126", // 给你的调试配置起个名字
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/real-time-intelligent-monitoring", //【重要】本地主机上带调试信息的可执行文件路径
+            "args": [], // 你的程序在板子上运行时需要传递的参数
+            "stopAtEntry": true, // 是否在程序入口(main函数)处暂停
+            "cwd": "${workspaceFolder}/src", //【重要】程序在开发板上运行的工作目录
+            "environment": [
+                // 如果程序需要设置环境变量，可以在这里添加
+                // 例如: {"name": "LD_LIBRARY_PATH", "value": "/usr/local/lib"}
+            ],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/opt/atk-dlrv1126-toolchain/usr/bin/arm-linux-gnueabihf-gdb", //【重要】交叉编译工具链中GDB的绝对路径
+            "miDebuggerServerAddress": "192.168.1.8:8888", //【重要】开发板的IP地址和gdbserver监听的端口
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+            // 如果源代码路径不匹配，可能需要使用 "sourceFileMap"
+            // "sourceFileMap": {
+            //     "/build/source/path": "${workspaceFolder}"
+            // }
+        }
+    ]
+}

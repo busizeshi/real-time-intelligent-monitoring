@@ -56,6 +56,52 @@ CMAKE_BINARY_DIR = /home/jwd/development/real-time-intelligent-monitoring/build
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip/fast
+
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
+
+# Special rule for the target install/local
+install/local/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local/fast
+
+# Special rule for the target install
+install: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install
+
+# Special rule for the target install
+install/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install/fast
+
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+
+.PHONY : list_install_components/fast
+
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -123,113 +169,221 @@ real-time-intelligent-monitoring/fast:
 	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/build
 .PHONY : real-time-intelligent-monitoring/fast
 
-src/config.o: src/config.c.o
-
-.PHONY : src/config.o
-
-# target to build an object file
-src/config.c.o:
-	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/config.c.o
-.PHONY : src/config.c.o
-
-src/config.i: src/config.c.i
-
-.PHONY : src/config.i
-
-# target to preprocess a source file
-src/config.c.i:
-	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/config.c.i
-.PHONY : src/config.c.i
-
-src/config.s: src/config.c.s
-
-.PHONY : src/config.s
-
-# target to generate assembly for a file
-src/config.c.s:
-	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/config.c.s
-.PHONY : src/config.c.s
-
-src/frame_capturer.o: src/frame_capturer.cpp.o
-
-.PHONY : src/frame_capturer.o
-
-# target to build an object file
-src/frame_capturer.cpp.o:
-	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.o
-.PHONY : src/frame_capturer.cpp.o
-
-src/frame_capturer.i: src/frame_capturer.cpp.i
-
-.PHONY : src/frame_capturer.i
-
-# target to preprocess a source file
-src/frame_capturer.cpp.i:
-	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.i
-.PHONY : src/frame_capturer.cpp.i
-
-src/frame_capturer.s: src/frame_capturer.cpp.s
-
-.PHONY : src/frame_capturer.s
-
-# target to generate assembly for a file
-src/frame_capturer.cpp.s:
-	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/frame_capturer.cpp.s
-.PHONY : src/frame_capturer.cpp.s
-
-src/main.o: src/main.cpp.o
+src/main.o: src/main.cc.o
 
 .PHONY : src/main.o
 
 # target to build an object file
-src/main.cpp.o:
-	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.o
-.PHONY : src/main.cpp.o
+src/main.cc.o:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cc.o
+.PHONY : src/main.cc.o
 
-src/main.i: src/main.cpp.i
+src/main.i: src/main.cc.i
 
 .PHONY : src/main.i
 
 # target to preprocess a source file
-src/main.cpp.i:
-	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.i
-.PHONY : src/main.cpp.i
+src/main.cc.i:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cc.i
+.PHONY : src/main.cc.i
 
-src/main.s: src/main.cpp.s
+src/main.s: src/main.cc.s
 
 .PHONY : src/main.s
 
 # target to generate assembly for a file
-src/main.cpp.s:
-	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cpp.s
-.PHONY : src/main.cpp.s
+src/main.cc.s:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/main.cc.s
+.PHONY : src/main.cc.s
 
-src/thread_safe_pq.o: src/thread_safe_pq.c.o
+src/rkmedia_vi_venc.o: src/rkmedia_vi_venc.c.o
 
-.PHONY : src/thread_safe_pq.o
+.PHONY : src/rkmedia_vi_venc.o
 
 # target to build an object file
-src/thread_safe_pq.c.o:
-	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/thread_safe_pq.c.o
-.PHONY : src/thread_safe_pq.c.o
+src/rkmedia_vi_venc.c.o:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rkmedia_vi_venc.c.o
+.PHONY : src/rkmedia_vi_venc.c.o
 
-src/thread_safe_pq.i: src/thread_safe_pq.c.i
+src/rkmedia_vi_venc.i: src/rkmedia_vi_venc.c.i
 
-.PHONY : src/thread_safe_pq.i
+.PHONY : src/rkmedia_vi_venc.i
 
 # target to preprocess a source file
-src/thread_safe_pq.c.i:
-	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/thread_safe_pq.c.i
-.PHONY : src/thread_safe_pq.c.i
+src/rkmedia_vi_venc.c.i:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rkmedia_vi_venc.c.i
+.PHONY : src/rkmedia_vi_venc.c.i
 
-src/thread_safe_pq.s: src/thread_safe_pq.c.s
+src/rkmedia_vi_venc.s: src/rkmedia_vi_venc.c.s
 
-.PHONY : src/thread_safe_pq.s
+.PHONY : src/rkmedia_vi_venc.s
 
 # target to generate assembly for a file
-src/thread_safe_pq.c.s:
-	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/thread_safe_pq.c.s
-.PHONY : src/thread_safe_pq.c.s
+src/rkmedia_vi_venc.c.s:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rkmedia_vi_venc.c.s
+.PHONY : src/rkmedia_vi_venc.c.s
+
+src/rknn_yolo/drm_func.o: src/rknn_yolo/drm_func.c.o
+
+.PHONY : src/rknn_yolo/drm_func.o
+
+# target to build an object file
+src/rknn_yolo/drm_func.c.o:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/drm_func.c.o
+.PHONY : src/rknn_yolo/drm_func.c.o
+
+src/rknn_yolo/drm_func.i: src/rknn_yolo/drm_func.c.i
+
+.PHONY : src/rknn_yolo/drm_func.i
+
+# target to preprocess a source file
+src/rknn_yolo/drm_func.c.i:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/drm_func.c.i
+.PHONY : src/rknn_yolo/drm_func.c.i
+
+src/rknn_yolo/drm_func.s: src/rknn_yolo/drm_func.c.s
+
+.PHONY : src/rknn_yolo/drm_func.s
+
+# target to generate assembly for a file
+src/rknn_yolo/drm_func.c.s:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/drm_func.c.s
+.PHONY : src/rknn_yolo/drm_func.c.s
+
+src/rknn_yolo/postprocess.o: src/rknn_yolo/postprocess.cc.o
+
+.PHONY : src/rknn_yolo/postprocess.o
+
+# target to build an object file
+src/rknn_yolo/postprocess.cc.o:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/postprocess.cc.o
+.PHONY : src/rknn_yolo/postprocess.cc.o
+
+src/rknn_yolo/postprocess.i: src/rknn_yolo/postprocess.cc.i
+
+.PHONY : src/rknn_yolo/postprocess.i
+
+# target to preprocess a source file
+src/rknn_yolo/postprocess.cc.i:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/postprocess.cc.i
+.PHONY : src/rknn_yolo/postprocess.cc.i
+
+src/rknn_yolo/postprocess.s: src/rknn_yolo/postprocess.cc.s
+
+.PHONY : src/rknn_yolo/postprocess.s
+
+# target to generate assembly for a file
+src/rknn_yolo/postprocess.cc.s:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/postprocess.cc.s
+.PHONY : src/rknn_yolo/postprocess.cc.s
+
+src/rknn_yolo/rga_func.o: src/rknn_yolo/rga_func.c.o
+
+.PHONY : src/rknn_yolo/rga_func.o
+
+# target to build an object file
+src/rknn_yolo/rga_func.c.o:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/rga_func.c.o
+.PHONY : src/rknn_yolo/rga_func.c.o
+
+src/rknn_yolo/rga_func.i: src/rknn_yolo/rga_func.c.i
+
+.PHONY : src/rknn_yolo/rga_func.i
+
+# target to preprocess a source file
+src/rknn_yolo/rga_func.c.i:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/rga_func.c.i
+.PHONY : src/rknn_yolo/rga_func.c.i
+
+src/rknn_yolo/rga_func.s: src/rknn_yolo/rga_func.c.s
+
+.PHONY : src/rknn_yolo/rga_func.s
+
+# target to generate assembly for a file
+src/rknn_yolo/rga_func.c.s:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/rga_func.c.s
+.PHONY : src/rknn_yolo/rga_func.c.s
+
+src/rknn_yolo/rknn_yolo.o: src/rknn_yolo/rknn_yolo.cc.o
+
+.PHONY : src/rknn_yolo/rknn_yolo.o
+
+# target to build an object file
+src/rknn_yolo/rknn_yolo.cc.o:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/rknn_yolo.cc.o
+.PHONY : src/rknn_yolo/rknn_yolo.cc.o
+
+src/rknn_yolo/rknn_yolo.i: src/rknn_yolo/rknn_yolo.cc.i
+
+.PHONY : src/rknn_yolo/rknn_yolo.i
+
+# target to preprocess a source file
+src/rknn_yolo/rknn_yolo.cc.i:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/rknn_yolo.cc.i
+.PHONY : src/rknn_yolo/rknn_yolo.cc.i
+
+src/rknn_yolo/rknn_yolo.s: src/rknn_yolo/rknn_yolo.cc.s
+
+.PHONY : src/rknn_yolo/rknn_yolo.s
+
+# target to generate assembly for a file
+src/rknn_yolo/rknn_yolo.cc.s:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/rknn_yolo.cc.s
+.PHONY : src/rknn_yolo/rknn_yolo.cc.s
+
+src/rknn_yolo/stb_impl.o: src/rknn_yolo/stb_impl.cpp.o
+
+.PHONY : src/rknn_yolo/stb_impl.o
+
+# target to build an object file
+src/rknn_yolo/stb_impl.cpp.o:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/stb_impl.cpp.o
+.PHONY : src/rknn_yolo/stb_impl.cpp.o
+
+src/rknn_yolo/stb_impl.i: src/rknn_yolo/stb_impl.cpp.i
+
+.PHONY : src/rknn_yolo/stb_impl.i
+
+# target to preprocess a source file
+src/rknn_yolo/stb_impl.cpp.i:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/stb_impl.cpp.i
+.PHONY : src/rknn_yolo/stb_impl.cpp.i
+
+src/rknn_yolo/stb_impl.s: src/rknn_yolo/stb_impl.cpp.s
+
+.PHONY : src/rknn_yolo/stb_impl.s
+
+# target to generate assembly for a file
+src/rknn_yolo/stb_impl.cpp.s:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rknn_yolo/stb_impl.cpp.s
+.PHONY : src/rknn_yolo/stb_impl.cpp.s
+
+src/safe_queue.o: src/safe_queue.c.o
+
+.PHONY : src/safe_queue.o
+
+# target to build an object file
+src/safe_queue.c.o:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_queue.c.o
+.PHONY : src/safe_queue.c.o
+
+src/safe_queue.i: src/safe_queue.c.i
+
+.PHONY : src/safe_queue.i
+
+# target to preprocess a source file
+src/safe_queue.c.i:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_queue.c.i
+.PHONY : src/safe_queue.c.i
+
+src/safe_queue.s: src/safe_queue.c.s
+
+.PHONY : src/safe_queue.s
+
+# target to generate assembly for a file
+src/safe_queue.c.s:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_queue.c.s
+.PHONY : src/safe_queue.c.s
 
 # Help Target
 help:
@@ -237,21 +391,37 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
+	@echo "... install/strip"
+	@echo "... install/local"
+	@echo "... install"
+	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... real-time-intelligent-monitoring"
-	@echo "... src/config.o"
-	@echo "... src/config.i"
-	@echo "... src/config.s"
-	@echo "... src/frame_capturer.o"
-	@echo "... src/frame_capturer.i"
-	@echo "... src/frame_capturer.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
-	@echo "... src/thread_safe_pq.o"
-	@echo "... src/thread_safe_pq.i"
-	@echo "... src/thread_safe_pq.s"
+	@echo "... src/rkmedia_vi_venc.o"
+	@echo "... src/rkmedia_vi_venc.i"
+	@echo "... src/rkmedia_vi_venc.s"
+	@echo "... src/rknn_yolo/drm_func.o"
+	@echo "... src/rknn_yolo/drm_func.i"
+	@echo "... src/rknn_yolo/drm_func.s"
+	@echo "... src/rknn_yolo/postprocess.o"
+	@echo "... src/rknn_yolo/postprocess.i"
+	@echo "... src/rknn_yolo/postprocess.s"
+	@echo "... src/rknn_yolo/rga_func.o"
+	@echo "... src/rknn_yolo/rga_func.i"
+	@echo "... src/rknn_yolo/rga_func.s"
+	@echo "... src/rknn_yolo/rknn_yolo.o"
+	@echo "... src/rknn_yolo/rknn_yolo.i"
+	@echo "... src/rknn_yolo/rknn_yolo.s"
+	@echo "... src/rknn_yolo/stb_impl.o"
+	@echo "... src/rknn_yolo/stb_impl.i"
+	@echo "... src/rknn_yolo/stb_impl.s"
+	@echo "... src/safe_queue.o"
+	@echo "... src/safe_queue.i"
+	@echo "... src/safe_queue.s"
 .PHONY : help
 
 
