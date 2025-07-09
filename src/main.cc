@@ -8,9 +8,11 @@ extern "C"
 
 bool quit;
 
-RTSPPusherContext *rtsp_ctx;
+static RTSPPusher *pusher;
 
-RknnDetector detector("/userdata/rknn_yolov5_demo/model/rv1109_rv1126/yolov5s_relu_rv1109_rv1126_out_opt.rknn");
+static RknnDetector *detector;
+
+static ByteBuffer *buf;
 
 static void sigterm_handler(int sig)
 {
@@ -25,8 +27,6 @@ static void sigterm_handler(int sig)
  */
 void *collectMpiBuffer(void *args)
 {
-    SafeQueue *queue = (SafeQueue *)args;
-
     MEDIA_BUFFER mb = NULL;
 
     while (!quit)
@@ -50,13 +50,13 @@ void *collectMpiBuffer(void *args)
                RK_MPI_MB_GetTimestamp(mb), stImageInfo.u32Width,
                stImageInfo.u32Height, stImageInfo.enImgType);
 
-        unsigned char *tmp_data = (unsigned char *)malloc(stImageInfo.u32Width * stImageInfo.u32Height * 3);
-        memcpy(tmp_data, RK_MPI_MB_GetPtr(mb), stImageInfo.u32Width * stImageInfo.u32Height * 3);
-        RK_MPI_MB_ReleaseBuffer(mb);
+        unsigned char *tmp_data = (unsigned char *)malloc(u32Width * u32Height * 3);
+        memcpy(tmp_data, RK_MPI_MB_GetPtr(mb), u32Width * u32Height * 3);
 
         printf("正在检测......\n");
-        detector.inferAndDraw((unsigned char *)tmp_data, 1920, 1080);
-        safe_queue_enqueue(queue, tmp_data);
+        detector->inferAndDraw((unsigned char *)RK_MPI_MB_GetPtr(mb), 1920, 1080);
+        byte_buffer_write(buf, (unsigned char *)RK_MPI_MB_GetPtr(mb), u32Height * u32Width * 3);
+        RK_MPI_MB_ReleaseBuffer(mb);
     }
 
     return NULL;
@@ -67,7 +67,6 @@ void *collectMpiBuffer(void *args)
  */
 static void *encodeRgb888ToH264(void *arg)
 {
-    SafeQueue *queue = (SafeQueue *)arg;
     printf("编码rgb888帧数据\n");
 
     MEDIA_BUFFER mb = NULL;
@@ -85,7 +84,11 @@ static void *encodeRgb888ToH264(void *arg)
                RK_MPI_MB_GetPtr(mb), RK_MPI_MB_GetFD(mb), RK_MPI_MB_GetSize(mb),
                RK_MPI_MB_GetModeID(mb), RK_MPI_MB_GetChannelID(mb),
                RK_MPI_MB_GetTimestamp(mb));
-        rtsp_pusher_push_frame(rtsp_ctx, (uint8_t *)RK_MPI_MB_GetPtr(mb), RK_MPI_MB_GetSize(mb));
+        if (rtsp_pusher_push_frame(pusher, (unsigned char *)RK_MPI_MB_GetPtr(mb), RK_MPI_MB_GetSize(mb)) < 0)
+        {
+            fprintf(stderr, "Failed to push frame, exiting.\n");
+            break;
+        }
 
         RK_MPI_MB_ReleaseBuffer(mb);
     }
@@ -96,45 +99,48 @@ static void *encodeRgb888ToH264(void *arg)
 int main(int argc, char *argv[])
 {
     signal(SIGINT, sigterm_handler);
+
     // 初始化相关变量
     int ret = 0;
     quit = false;
-    SafeQueue *queue = safe_queue_create(10);
-    void *img_data;
-    ret = rkmedia_init();
-    // rtsp推流器初始化
-    rtsp_ctx = rtsp_pusher_init("rtsp://192.168.1.10/live/stream", u32Width, u32Height, fps);
-    // 目标检测初始化
-    if (!detector.isInitialized())
-    {
-        std::cerr << "ERROR: Failed to initialize RknnDetector." << std::endl;
-        return -1;
-    }
 
+    // rkmedia初始化
+    ret = rkmedia_init();
     if (ret)
     {
         printf("rkmedia_init failed!\n");
         return -1;
     }
 
+    // rtsp推流器初始化
+    pusher = rtsp_pusher_init("rtsp://192.168.1.10/live/stream", u32Width, u32Height, 60);
+
+    // 目标检测初始化
+    detector = new RknnDetector("/userdata/rknn_yolov5_demo/model/rv1109_rv1126/yolov5s_relu_rv1109_rv1126_out_opt.rknn");
+    if (!detector->isInitialized())
+    {
+        std::cerr << "ERROR: Failed to initialize RknnDetector." << std::endl;
+        return -1;
+    }
+
+    buf = byte_buffer_create(u32Width * u32Height * 3 * 20);
+
     printf("开始采集数据\n");
     pthread_t collect_thread;
-    pthread_create(&collect_thread, NULL, collectMpiBuffer, queue);
+    pthread_create(&collect_thread, NULL, collectMpiBuffer, NULL);
     ret = mpi_vi_start();
-
-    venc_start(quit, queue);
 
     printf("开始推流\n");
     pthread_t push_thread;
-    pthread_create(&push_thread, NULL, encodeRgb888ToH264, &detector);
+    pthread_create(&push_thread, NULL, encodeRgb888ToH264, NULL);
+    venc_start(quit, buf);
 
     while (!quit)
     {
         usleep(500000);
     }
-    safe_queue_destroy(queue);
     rkmedia_deinit();
-    rtsp_pusher_cleanup(rtsp_ctx);
+    rtsp_pusher_close(pusher);
 
     return 0;
 }

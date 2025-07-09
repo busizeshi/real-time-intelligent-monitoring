@@ -385,32 +385,32 @@ src/rtsp_push.c.s:
 	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.s
 .PHONY : src/rtsp_push.c.s
 
-src/safe_queue.o: src/safe_queue.c.o
+src/safe_buffer.o: src/safe_buffer.c.o
 
-.PHONY : src/safe_queue.o
+.PHONY : src/safe_buffer.o
 
 # target to build an object file
-src/safe_queue.c.o:
-	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_queue.c.o
-.PHONY : src/safe_queue.c.o
+src/safe_buffer.c.o:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_buffer.c.o
+.PHONY : src/safe_buffer.c.o
 
-src/safe_queue.i: src/safe_queue.c.i
+src/safe_buffer.i: src/safe_buffer.c.i
 
-.PHONY : src/safe_queue.i
+.PHONY : src/safe_buffer.i
 
 # target to preprocess a source file
-src/safe_queue.c.i:
-	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_queue.c.i
-.PHONY : src/safe_queue.c.i
+src/safe_buffer.c.i:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_buffer.c.i
+.PHONY : src/safe_buffer.c.i
 
-src/safe_queue.s: src/safe_queue.c.s
+src/safe_buffer.s: src/safe_buffer.c.s
 
-.PHONY : src/safe_queue.s
+.PHONY : src/safe_buffer.s
 
 # target to generate assembly for a file
-src/safe_queue.c.s:
-	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_queue.c.s
-.PHONY : src/safe_queue.c.s
+src/safe_buffer.c.s:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_buffer.c.s
+.PHONY : src/safe_buffer.c.s
 
 # Help Target
 help:
@@ -449,9 +449,9 @@ help:
 	@echo "... src/rtsp_push.o"
 	@echo "... src/rtsp_push.i"
 	@echo "... src/rtsp_push.s"
-	@echo "... src/safe_queue.o"
-	@echo "... src/safe_queue.i"
-	@echo "... src/safe_queue.s"
+	@echo "... src/safe_buffer.o"
+	@echo "... src/safe_buffer.i"
+	@echo "... src/safe_buffer.s"
 .PHONY : help
 
 

@@ -227,46 +227,6 @@ int RknnDetector::init(const std::string &model_path)
     return 0;
 }
 
-void RknnDetector::draw_rectangle_on_buffer(unsigned char *buffer, int width, int height, const detect_result_t &result, const unsigned char color[3])
-{
-    int x1 = result.box.left;
-    int y1 = result.box.top;
-    int x2 = result.box.right;
-    int y2 = result.box.bottom;
-
-    // 边界检查和裁剪
-    x1 = std::max(0, x1);
-    y1 = std::max(0, y1);
-    x2 = std::min(width - 1, x2);
-    y2 = std::min(height - 1, y2);
-
-    // 绘制上边和下边
-    for (int x = x1; x <= x2; ++x)
-    {
-        // top
-        buffer[(y1 * width + x) * 3 + 0] = color[0]; // R
-        buffer[(y1 * width + x) * 3 + 1] = color[1]; // G
-        buffer[(y1 * width + x) * 3 + 2] = color[2]; // B
-        // bottom
-        buffer[(y2 * width + x) * 3 + 0] = color[0];
-        buffer[(y2 * width + x) * 3 + 1] = color[1];
-        buffer[(y2 * width + x) * 3 + 2] = color[2];
-    }
-
-    // 绘制左边和右边
-    for (int y = y1; y <= y2; ++y)
-    {
-        // left
-        buffer[(y * width + x1) * 3 + 0] = color[0];
-        buffer[(y * width + x1) * 3 + 1] = color[1];
-        buffer[(y * width + x1) * 3 + 2] = color[2];
-        // right
-        buffer[(y * width + x2) * 3 + 0] = color[0];
-        buffer[(y * width + x2) * 3 + 1] = color[1];
-        buffer[(y * width + x2) * 3 + 2] = color[2];
-    }
-}
-
 int RknnDetector::inferAndDraw(unsigned char *img_data, int img_width, int img_height)
 {
     if (!m_is_initialized)

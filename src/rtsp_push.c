@@ -3,185 +3,151 @@
 #include <stdlib.h>
 #include <string.h>
 
-// 定义我们的上下文结构体
-struct RTSPPusherContext
-{
+// 引入FFmpeg头文件
+#include <libavformat/avformat.h>
+#include <libavutil/opt.h>
+#include <libavutil/timestamp.h>
+
+// 内部使用的结构体，对调用者隐藏
+struct RTSPPusher {
     AVFormatContext *format_ctx;
     AVStream *video_stream;
-    char *rtsp_url;
-    int framerate;
+    int fps;
     int64_t frame_index;
-    int is_initialized;
 };
 
-// 内部错误日志函数
-static void log_ffmpeg_error(int err_num, const char *message)
-{
-    char err_buf[AV_ERROR_MAX_STRING_SIZE];
-    av_strerror(err_num, err_buf, sizeof(err_buf));
-    fprintf(stderr, "%s: %s (code: %d)\n", message, err_buf, err_num);
-}
+RTSPPusher* rtsp_pusher_init(const char* url, int width, int height, int fps) {
+    int ret;
 
-RTSPPusherContext *rtsp_pusher_init(const char *rtsp_url, int width, int height, int framerate)
-{
-    RTSPPusherContext *ctx = (RTSPPusherContext *)malloc(sizeof(RTSPPusherContext));
-    if (!ctx)
-    {
-        fprintf(stderr, "Failed to allocate RTSPPusherContext\n");
+    RTSPPusher *pusher = (RTSPPusher*)calloc(1, sizeof(RTSPPusher));
+    if (!pusher) {
+        fprintf(stderr, "Failed to allocate RTSPPusher\n");
         return NULL;
     }
-    // 使用memset初始化，防止野指针
-    memset(ctx, 0, sizeof(RTSPPusherContext));
-
-    ctx->rtsp_url = strdup(rtsp_url);
-    if (!ctx->rtsp_url)
-    {
-        fprintf(stderr, "Failed to duplicate rtsp_url string.\n");
-        free(ctx);
-        return NULL;
-    }
-    ctx->framerate = framerate;
-    ctx->frame_index = 0;
-
-    int ret = 0;
+    pusher->fps = fps;
+    pusher->frame_index = 0;
 
     // 1. 分配AVFormatContext
-    ret = avformat_alloc_output_context2(&ctx->format_ctx, NULL, "rtsp", ctx->rtsp_url);
-    if (ret < 0)
-    {
-        log_ffmpeg_error(ret, "Failed to allocate output context");
-        rtsp_pusher_cleanup(ctx);
-        return NULL;
+    // avformat_alloc_output_context2 会根据url的后缀或指定的format_name来选择合适的复用器
+    ret = avformat_alloc_output_context2(&pusher->format_ctx, NULL, "rtsp", url);
+    if (ret < 0) {
+        fprintf(stderr, "Failed to allocate output context: %s\n", av_err2str(ret));
+        goto fail;
     }
 
     // 2. 创建视频流
-    ctx->video_stream = avformat_new_stream(ctx->format_ctx, NULL);
-    if (!ctx->video_stream)
-    {
+    pusher->video_stream = avformat_new_stream(pusher->format_ctx, NULL);
+    if (!pusher->video_stream) {
         fprintf(stderr, "Failed to create new stream\n");
-        rtsp_pusher_cleanup(ctx);
-        return NULL;
+        goto fail;
     }
-    ctx->video_stream->id = ctx->format_ctx->nb_streams - 1;
+    pusher->video_stream->id = pusher->format_ctx->nb_streams - 1;
 
     // 3. 设置视频流参数
-    AVCodecParameters *codec_params = ctx->video_stream->codecpar;
-    codec_params->codec_type = AVMEDIA_TYPE_VIDEO;
-    codec_params->codec_id = AV_CODEC_ID_H264;
-    codec_params->width = width;
-    codec_params->height = height;
-
-    // 设置时间基，这是计算PTS/DTS的关键
-    ctx->video_stream->time_base = (AVRational){1, ctx->framerate};
+    // 这些参数会写入SDP中，客户端需要这些信息来正确解码
+    AVCodecParameters *codecpar = pusher->video_stream->codecpar;
+    codecpar->codec_type = AVMEDIA_TYPE_VIDEO;
+    codecpar->codec_id = AV_CODEC_ID_H264;
+    codecpar->width = width;
+    codecpar->height = height;
+    codecpar->format = AV_PIX_FMT_YUV420P; // H.264通常使用YUV420P
 
     // 4. 打开网络输出
-    if (!(ctx->format_ctx->oformat->flags & AVFMT_NOFILE))
-    {
-        ret = avio_open(&ctx->format_ctx->pb, ctx->rtsp_url, AVIO_FLAG_WRITE);
-        if (ret < 0)
-        {
-            log_ffmpeg_error(ret, "Failed to open URL");
-            rtsp_pusher_cleanup(ctx);
-            return NULL;
+    // AVFMT_NOFILE标志表示该格式不需要本地文件IO（例如RTSP、RTMP）
+    if (!(pusher->format_ctx->oformat->flags & AVFMT_NOFILE)) {
+        ret = avio_open(&pusher->format_ctx->pb, url, AVIO_FLAG_WRITE);
+        if (ret < 0) {
+            fprintf(stderr, "Could not open output URL '%s': %s\n", url, av_err2str(ret));
+            goto fail;
         }
     }
+    
+    // 设置RTSP特定选项，例如传输协议为TCP，可以避免UDP丢包问题
+    AVDictionary *opts = NULL;
+    av_dict_set(&opts, "rtsp_transport", "tcp", 0);
+    av_dict_set(&opts, "stimeout", "5000000", 0); // 设置5秒超时
 
-    // 5. 写入RTSP头信息
-    AVDictionary *options = NULL;
-    av_dict_set(&options, "rtsp_transport", "udp", 0);
-    av_dict_set(&options, "stimeout", "5000000", 0);
-    ret = avformat_write_header(ctx->format_ctx, &options);
-    av_dict_free(&options);
-    if (ret < 0)
-    {
-        log_ffmpeg_error(ret, "Failed to write header");
-        rtsp_pusher_cleanup(ctx);
-        return NULL;
+    // 5. 写入媒体头信息
+    // 这会与服务器进行RTSP握手（ANNOUNCE/SETUP/RECORD）
+    ret = avformat_write_header(pusher->format_ctx, &opts);
+    av_dict_free(&opts);
+    if (ret < 0) {
+        fprintf(stderr, "Failed to write header: %s\n", av_err2str(ret));
+        goto fail;
     }
 
-    printf("RTSP Pusher initialized successfully. Streaming to: %s\n", ctx->rtsp_url);
-    ctx->is_initialized = 1;
-    return ctx;
+    printf("RTSP pusher initialized successfully. Streaming to: %s\n", url);
+    av_dump_format(pusher->format_ctx, 0, url, 1);
+
+    return pusher;
+
+fail:
+    rtsp_pusher_close(pusher);
+    return NULL;
 }
 
-int rtsp_pusher_push_frame(RTSPPusherContext *ctx, const uint8_t *data, int size)
-{
-    if (!ctx || !ctx->is_initialized)
-    {
-        fprintf(stderr, "Pusher not initialized.\n");
+int rtsp_pusher_push_frame(RTSPPusher* pusher, const unsigned char* data, int size) {
+    if (!pusher || !pusher->format_ctx || !data || size <= 0) {
         return -1;
     }
 
     AVPacket pkt;
     av_init_packet(&pkt);
 
-    // 计算PTS (Presentation Timestamp) 和 DTS (Decoding Timestamp)
-    pkt.pts = ctx->frame_index;
-    pkt.dts = ctx->frame_index;
-    pkt.duration = 1;
-
-    av_packet_rescale_ts(&pkt, (AVRational){1, ctx->framerate}, ctx->video_stream->time_base);
-
-    // FFmpeg API需要非const指针，但我们保证不修改
-    pkt.data = (uint8_t *)data;
+    // 设置时间戳 (PTS 和 DTS)
+    // H.264流，没有B帧的情况下，PTS和DTS通常是相同的
+    // 时间基 (time_base) 是计算时间戳的基础
+    AVRational time_base = pusher->video_stream->time_base;
+    
+    // 我们需要将帧号转换为时间戳。1/fps 是帧的持续时间。
+    // av_rescale_q 用于在不同的时间基之间安全地转换时间戳。
+    pkt.pts = av_rescale_q(pusher->frame_index, (AVRational){1, pusher->fps}, time_base);
+    pkt.dts = pkt.pts;
+    pkt.duration = av_rescale_q(1, (AVRational){1, pusher->fps}, time_base);
+    
+    pkt.data = (uint8_t*)data;
     pkt.size = size;
-    pkt.stream_index = ctx->video_stream->id;
-
-    // H264的NALU类型，0x05 (IDR), 0x07 (SPS), 0x08 (PPS) 都很重要
-    // NALU Header (1 byte): [F(1) NRI(2) Type(5)]
-    // 类型码是低5位
-    uint8_t nalu_type = data[4] & 0x1F;
-    if (nalu_type == 5 || nalu_type == 7)
-    { // IDR帧或SPS/PPS组合
+    pkt.stream_index = pusher->video_stream->index;
+    
+    // 关键帧的标志，对于I帧需要设置
+    // H.264 NALU type 5 is an IDR frame (a type of I-frame)
+    // NALU type 7 is SPS, 8 is PPS.
+    // 我们简单地检查NALU type来判断是否是关键帧
+    if (data[4] != 0 && (data[4] & 0x1F) == 5) {
         pkt.flags |= AV_PKT_FLAG_KEY;
     }
 
+    pusher->frame_index++;
+
     // 发送数据包
-    int ret = av_interleaved_write_frame(ctx->format_ctx, &pkt);
-    if (ret < 0)
-    {
-        log_ffmpeg_error(ret, "Failed to write frame");
-        // 不需要 av_packet_unref(&pkt); 因为pkt.data是我们外部的，没有分配内存
+    // av_interleaved_write_frame 会处理RTP打包和发送
+    int ret = av_interleaved_write_frame(pusher->format_ctx, &pkt);
+    if (ret < 0) {
+        fprintf(stderr, "Error while writing frame: %s\n", av_err2str(ret));
         return ret;
     }
 
-    ctx->frame_index++;
     return 0;
 }
 
-void rtsp_pusher_cleanup(RTSPPusherContext *ctx)
-{
-    if (!ctx)
-    {
+void rtsp_pusher_close(RTSPPusher* pusher) {
+    if (!pusher) {
         return;
     }
 
-    printf("Cleaning up RTSP Pusher...\n");
+    if (pusher->format_ctx) {
+        // 发送RTSP TEARDOWN命令
+        av_write_trailer(pusher->format_ctx);
 
-    // 仅在成功初始化后才发送trailer
-    if (ctx->is_initialized && ctx->format_ctx)
-    {
-        av_write_trailer(ctx->format_ctx);
+        // 如果打开了avio context，则关闭它
+        if (!(pusher->format_ctx->oformat->flags & AVFMT_NOFILE) && pusher->format_ctx->pb) {
+            avio_closep(&pusher->format_ctx->pb);
+        }
+
+        // 释放AVFormatContext
+        avformat_free_context(pusher->format_ctx);
     }
-
-    // 关闭网络IO
-    if (ctx->format_ctx && !(ctx->format_ctx->oformat->flags & AVFMT_NOFILE) && ctx->format_ctx->pb)
-    {
-        avio_closep(&ctx->format_ctx->pb);
-    }
-
-    // 释放Context
-    if (ctx->format_ctx)
-    {
-        avformat_free_context(ctx->format_ctx);
-    }
-
-    // 释放我们自己分配的内存
-    if (ctx->rtsp_url)
-    {
-        free(ctx->rtsp_url);
-    }
-
-    free(ctx);
-    printf("Cleanup finished.\n");
+    
+    free(pusher);
+    printf("RTSP pusher closed.\n");
 }

@@ -14,7 +14,7 @@
 
 #include "common/sample_common.h"
 #include "rkmedia_api.h"
-#include "safe_queue.h"
+#include "safe_buffer.h"
 
 extern RK_U32 u32Width;
 extern RK_U32 u32Height;
@@ -45,6 +45,6 @@ int rkmedia_deinit();
 /**
  * @brief 启动编码
  */
-int venc_start(bool quit, SafeQueue *queue);
+int venc_start(bool quit, ByteBuffer *buf);
 
 #endif

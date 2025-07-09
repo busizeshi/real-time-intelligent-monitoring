@@ -20,17 +20,15 @@ int rkmedia_init()
     u32Width = 1920;
     u32Height = 1080;
     frameCnt = -1;
+    VENC_RC_MODE_E enEncoderMode = VENC_RC_MODE_H264CBR;
     pDeviceName = "rkispp_scale0";
     pIqfilesPath = "/etc/iqfiles/";
     s32CamId = 0;
     bMultictx = RK_FALSE;
     fps = 30;
 
-    printf("#####Device: %s\n", pDeviceName);
-    printf("#####Resolution: %dx%d\n", u32Width, u32Height);
-    printf("#####Frame Count to save: %d\n", frameCnt);
-    printf("#####Output Path: %s\n", pOutPath);
-    printf("#CameraIdx: %d\n\n", s32CamId);
+    printf("\n---------------------初始化rkmedia api-----------------------------\n");
+    // todo 输出初始化信息
 
 #ifdef RKAIQ
     printf("#####Aiq xml dirpath: %s\n\n", pIqfilesPath);
@@ -103,14 +101,15 @@ int rkmedia_deinit()
 #endif
 }
 
-int venc_start(bool quit, SafeQueue *queue)
+int venc_start(bool quit, ByteBuffer *buf)
 {
     RK_U32 u32FrameId = 0;
     RK_S32 s32ReadSize = 0;
     RK_S32 s32FrameSize = 0;
-    RK_U64 u64TimePeriod = 1000000 / fps; // us
+    // RK_U64 u64TimePeriod = 1000000 / fps; // us
+    RK_U64 u64TimePeriod = 0; // us
     MB_IMAGE_INFO_S stImageInfo = {u32Width, u32Height, u32Width, u32Height,
-                                   IMAGE_TYPE_BGR888};
+                                   IMAGE_TYPE_RGB888};
 
     while (!quit)
     {
@@ -125,14 +124,8 @@ int venc_start(bool quit, SafeQueue *queue)
         // One frame size for nv12 image.
         s32FrameSize = u32Width * u32Height * 3;
 
-        void *rtspDataPtr = RK_MPI_MB_GetPtr(mb);
-
-        while (queue->size < 0)
-        {
-            usleep(1000);
-        }
-
-        rtspDataPtr = safe_queue_dequeue(queue);
+        size_t n = byte_buffer_read(buf, (unsigned char *)RK_MPI_MB_GetPtr(mb), s32FrameSize);
+        printf("Read %d bytes from buffer\n", n);
 
         RK_MPI_MB_SetSize(mb, s32FrameSize);
         RK_MPI_MB_SetTimestamp(mb, u32FrameId * u64TimePeriod);
