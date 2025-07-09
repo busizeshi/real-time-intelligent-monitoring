@@ -14,7 +14,7 @@
 
 #include "common/sample_common.h"
 #include "rkmedia_api.h"
-#include "safe_buffer.h"
+#include "buffer_pool.h"
 
 extern RK_U32 u32Width;
 extern RK_U32 u32Height;
@@ -41,10 +41,5 @@ int mpi_vi_start();
  * @brief RKMedia 释放资源
  */
 int rkmedia_deinit();
-
-/**
- * @brief 启动编码
- */
-int venc_start(bool quit, ByteBuffer *buf);
 
 #endif

@@ -69,9 +69,9 @@ void img_resize_fast(rga_context *rga_ctx, int src_fd, int src_w, int src_h, uin
     return;
 }
 
-void img_resize_slow(rga_context *rga_ctx, void *src_virt, 
-    int src_w, int src_h, void *dst_virt, 
-    int dst_w, int dst_h)
+void img_resize_slow(rga_context *rga_ctx, void *src_virt,
+                     int src_w, int src_h, void *dst_virt,
+                     int dst_w, int dst_h)
 {
     // printf("rga use virtual, src(%dx%d) -> dst(%dx%d)\n", src_w, src_h, dst_w, dst_h);
 
@@ -108,9 +108,52 @@ void img_resize_slow(rga_context *rga_ctx, void *src_virt,
 
 int RGA_deinit(rga_context *rga_ctx)
 {
-    if(rga_ctx->rga_handle)
+    if (rga_ctx->rga_handle)
     {
         dlclose(rga_ctx->rga_handle);
         rga_ctx->rga_handle = NULL;
     }
+}
+
+void rgb888_to_nv12(rga_context *rga_ctx, void *src_virt, int src_w, int src_h, void *dst_virt, int dst_w, int dst_h)
+{
+    // 检查 RGA 句柄是否有效
+    if (rga_ctx && rga_ctx->rga_handle && rga_ctx->blit_func)
+    {
+        int ret = 0;
+        rga_info_t src, dst;
+
+        // --- 配置源图像信息 (Source Image) ---
+        memset(&src, 0, sizeof(rga_info_t));
+        src.fd = -1;            // 不使用文件描述符
+        src.mmuFlag = 1;        // 使用虚拟地址 (MMU会进行地址转换)
+        src.virAddr = (void *)src_virt; // 设置源图像的虚拟地址
+
+        // 设置源图像的矩形区域、尺寸和格式
+        // 格式为 RK_FORMAT_RGB_888
+        rga_set_rect(&src.rect, 0, 0, src_w, src_h, src_w, src_h, RK_FORMAT_RGB_888);
+
+        // --- 配置目标图像信息 (Destination Image) ---
+        memset(&dst, 0, sizeof(rga_info_t));
+        dst.fd = -1;            // 不使用文件描述符
+        dst.mmuFlag = 1;        // 使用虚拟地址
+        dst.virAddr = dst_virt; // 设置目标图像的虚拟地址
+
+        rga_set_rect(&dst.rect, 0, 0, dst_w, dst_h, dst_w, dst_h, RK_FORMAT_YCrCb_420_SP); // <-- 核心改动在这里
+
+        // 调用 RGA 的 blit 函数执行操作
+        // RGA 会自动处理从 RGB888 到 NV12 的转换和缩放
+        ret = rga_ctx->blit_func(&src, &dst, NULL);
+        if (ret)
+        {
+            // strerror(errno) 在 RGA 返回错误码时可能不准确
+            // RGA 的错误码有专门的解释，但这里为了简单起见保留
+            printf("c_RkRgaBlit failed with return value %d\n", ret);
+        }
+
+        return;
+    }
+
+    // 如果 RGA 未初始化，则直接返回
+    return;
 }

@@ -169,6 +169,33 @@ real-time-intelligent-monitoring/fast:
 	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/build
 .PHONY : real-time-intelligent-monitoring/fast
 
+src/buffer_pool.o: src/buffer_pool.c.o
+
+.PHONY : src/buffer_pool.o
+
+# target to build an object file
+src/buffer_pool.c.o:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/buffer_pool.c.o
+.PHONY : src/buffer_pool.c.o
+
+src/buffer_pool.i: src/buffer_pool.c.i
+
+.PHONY : src/buffer_pool.i
+
+# target to preprocess a source file
+src/buffer_pool.c.i:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/buffer_pool.c.i
+.PHONY : src/buffer_pool.c.i
+
+src/buffer_pool.s: src/buffer_pool.c.s
+
+.PHONY : src/buffer_pool.s
+
+# target to generate assembly for a file
+src/buffer_pool.c.s:
+	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/buffer_pool.c.s
+.PHONY : src/buffer_pool.c.s
+
 src/main.o: src/main.cc.o
 
 .PHONY : src/main.o
@@ -385,33 +412,6 @@ src/rtsp_push.c.s:
 	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/rtsp_push.c.s
 .PHONY : src/rtsp_push.c.s
 
-src/safe_buffer.o: src/safe_buffer.c.o
-
-.PHONY : src/safe_buffer.o
-
-# target to build an object file
-src/safe_buffer.c.o:
-	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_buffer.c.o
-.PHONY : src/safe_buffer.c.o
-
-src/safe_buffer.i: src/safe_buffer.c.i
-
-.PHONY : src/safe_buffer.i
-
-# target to preprocess a source file
-src/safe_buffer.c.i:
-	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_buffer.c.i
-.PHONY : src/safe_buffer.c.i
-
-src/safe_buffer.s: src/safe_buffer.c.s
-
-.PHONY : src/safe_buffer.s
-
-# target to generate assembly for a file
-src/safe_buffer.c.s:
-	$(MAKE) -f CMakeFiles/real-time-intelligent-monitoring.dir/build.make CMakeFiles/real-time-intelligent-monitoring.dir/src/safe_buffer.c.s
-.PHONY : src/safe_buffer.c.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -425,6 +425,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... real-time-intelligent-monitoring"
+	@echo "... src/buffer_pool.o"
+	@echo "... src/buffer_pool.i"
+	@echo "... src/buffer_pool.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
@@ -449,9 +452,6 @@ help:
 	@echo "... src/rtsp_push.o"
 	@echo "... src/rtsp_push.i"
 	@echo "... src/rtsp_push.s"
-	@echo "... src/safe_buffer.o"
-	@echo "... src/safe_buffer.i"
-	@echo "... src/safe_buffer.s"
 .PHONY : help
 
 
