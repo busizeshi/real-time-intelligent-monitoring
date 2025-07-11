@@ -41,6 +41,9 @@
         "streambuf": "cpp",
         "typeinfo": "cpp",
         "rga_func.h": "c",
-        "rkmedia_common.h": "c"
+        "rkmedia_common.h": "c",
+        "buffer_pool.h": "c",
+        "iomanip": "cpp",
+        "string.h": "c"
     }
 }

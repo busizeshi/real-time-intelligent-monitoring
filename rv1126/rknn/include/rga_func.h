@@ -29,8 +29,6 @@ extern "C"
 
     int RGA_deinit(rga_context *rga_ctx);
 
-    void rgb888_to_nv12(rga_context *rga_ctx, void *src_virt, int src_w, int src_h, void *dst_virt, int dst_w, int dst_h);
-
 #ifdef __cplusplus
 }
 #endif

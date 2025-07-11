@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jwd/development/project_demo/real-time-intelligent-monitoring/include/tools.h
+time.h
+-
+
+/home/jwd/development/project_demo/real-time-intelligent-monitoring/src/tools.c
+tools.h
+/home/jwd/development/project_demo/real-time-intelligent-monitoring/src/tools.h
+stdio.h
+-
+stdlib.h
+-
+
+/home/jwd/development/project_demo/real-time-intelligent-monitoring/test/demo1.c
+tools.h
+/home/jwd/development/project_demo/real-time-intelligent-monitoring/test/tools.h
+stdio.h
+-
+stdlib.h
+-
+

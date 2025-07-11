@@ -1,0 +1,1 @@
+/usr/bin/cc    CMakeFiles/project_test.dir/demo1.c.o CMakeFiles/project_test.dir/home/jwd/development/project_demo/real-time-intelligent-monitoring/src/tools.c.o  -o project_test 

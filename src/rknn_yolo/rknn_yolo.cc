@@ -4,9 +4,40 @@
 #include <string.h>
 #include <sys/time.h>
 #include <iostream>
+#include <sstream>
+#include <fstream>
+#include <ctime>
+#include <iomanip>
 
-void draw_on_rgb888(unsigned char *rgb_data, int width, int height,
-                    int x1, int y1, int x2, int y2, const std::string &label)
+static std::string getCurrentTimeString()
+{
+    std::time_t now = std::time(nullptr);
+    std::tm *tm_now = std::localtime(&now);
+
+    std::ostringstream oss;
+    oss << std::put_time(tm_now, "%Y-%m-%d_%H-%M-%S");
+    return oss.str();
+}
+
+static void writeRGBToFile(const unsigned char *data, int width, int height)
+{
+    std::string filename = "../jpegs/" + getCurrentTimeString() + ".rgb";
+
+    std::ofstream outfile(filename, std::ios::binary);
+    if (!outfile)
+    {
+        std::cerr << "无法创建文件: " << filename << std::endl;
+        return;
+    }
+
+    outfile.write(reinterpret_cast<const char *>(data), width * height * 3);
+    outfile.close();
+
+    std::cout << "已写入文件: " << filename << std::endl;
+}
+
+static void draw_on_rgb888(unsigned char *rgb_data, int width, int height,
+                           int x1, int y1, int x2, int y2, const std::string &label)
 {
     // Step 1: RGB → BGR
     cv::Mat img_rgb(height, width, CV_8UC3, rgb_data);
@@ -16,7 +47,7 @@ void draw_on_rgb888(unsigned char *rgb_data, int width, int height,
     // Step 2: draw
     cv::rectangle(img_bgr, cv::Point(x1, y1), cv::Point(x2, y2), cv::Scalar(0, 255, 0), 1);
     cv::putText(img_bgr, label, cv::Point(x1, y1 - 12),
-                cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255), 1);
+                cv::FONT_HERSHEY_SIMPLEX, 1.5, cv::Scalar(255, 255, 255), 1);
 
     // Step 3: BGR → RGB
     cv::cvtColor(img_bgr, img_rgb, cv::COLOR_BGR2RGB);
@@ -49,14 +80,14 @@ static unsigned char *load_data(FILE *fp, size_t ofst, size_t sz)
     ret = fseek(fp, ofst, SEEK_SET);
     if (ret != 0)
     {
-        printf("blob seek failure.\n");
+        log_error("blob seek failure.\n");
         return NULL;
     }
 
     data = (unsigned char *)malloc(sz);
     if (data == NULL)
     {
-        printf("buffer malloc failure.\n");
+        log_error("buffer malloc failure.\n");
         return NULL;
     }
     ret = fread(data, 1, sz, fp);
@@ -72,7 +103,7 @@ static unsigned char *load_model_from_file(const char *filename, int *model_size
     fp = fopen(filename, "rb");
     if (NULL == fp)
     {
-        printf("Open file %s failed.\n", filename);
+        log_error("Open file failed");
         return NULL;
     }
 
@@ -99,7 +130,7 @@ RknnDetector::RknnDetector(const std::string &model_path, float conf_threshold, 
 
     if (init(model_path) != 0)
     {
-        std::cerr << "ERROR: RknnDetector initialization failed." << std::endl;
+        log_error("Failed to initialize RKNN.");
         // 在析构函数中进行清理
     }
 }
@@ -134,7 +165,7 @@ int RknnDetector::init(const std::string &model_path)
     printf("Model data pointer: %p\n", model_data);
     if (model_data == NULL)
     {
-        printf("Failed to load model, aborting.\n");
+        log_error("Failed to load model.");
         return -1;
     }
 
@@ -142,7 +173,7 @@ int RknnDetector::init(const std::string &model_path)
     // free(model_data); // 模型数据已加载到NPU，可以释放
     if (ret < 0)
     {
-        printf("rknn_init error ret=%d\n", ret);
+        log_error("rknn_init error");
         return -1;
     }
 
@@ -150,7 +181,7 @@ int RknnDetector::init(const std::string &model_path)
     ret = rknn_query(m_ctx, RKNN_QUERY_IN_OUT_NUM, &m_io_num, sizeof(m_io_num));
     if (ret < 0)
     {
-        printf("rknn_query(RKNN_QUERY_IN_OUT_NUM) error ret=%d\n", ret);
+        log_error("rknn_query(RKNN_QUERY_IN_OUT_NUM) error");
         return -1;
     }
 
@@ -163,7 +194,7 @@ int RknnDetector::init(const std::string &model_path)
         ret = rknn_query(m_ctx, RKNN_QUERY_INPUT_ATTR, &(m_input_attrs[i]), sizeof(rknn_tensor_attr));
         if (ret < 0)
         {
-            printf("rknn_query(RKNN_QUERY_INPUT_ATTR) error ret=%d\n", ret);
+            log_error("rknn_query(RKNN_QUERY_INPUT_ATTR) error");
             return -1;
         }
         printRKNNTensor(&(m_input_attrs[i]));
@@ -178,7 +209,7 @@ int RknnDetector::init(const std::string &model_path)
         ret = rknn_query(m_ctx, RKNN_QUERY_OUTPUT_ATTR, &(m_output_attrs[i]), sizeof(rknn_tensor_attr));
         if (ret < 0)
         {
-            printf("rknn_query(RKNN_QUERY_OUTPUT_ATTR) error ret=%d\n", ret);
+            log_error("rknn_query(RKNN_QUERY_OUTPUT_ATTR) error");
             return -1;
         }
         printRKNNTensor(&(m_output_attrs[i]));
@@ -202,7 +233,7 @@ int RknnDetector::init(const std::string &model_path)
     m_drm_fd = drm_init(&m_drm_ctx);
     if (m_drm_fd < 0)
     {
-        printf("drm_init failed.\n");
+        log_error("drm_init failed.");
         return -1;
     }
 
@@ -212,7 +243,7 @@ int RknnDetector::init(const std::string &model_path)
     m_resize_buf = malloc(m_model_width * m_model_height * m_model_channel);
     if (!m_resize_buf)
     {
-        printf("Failed to malloc resize buffer.\n");
+        log_error("Failed to malloc resize buffer.");
         return -1;
     }
 
@@ -231,7 +262,7 @@ int RknnDetector::inferAndDraw(unsigned char *img_data, int img_width, int img_h
 {
     if (!m_is_initialized)
     {
-        printf("ERROR: RknnDetector is not initialized.\n");
+        log_error("RknnDetector is not initialized.");
         return -1;
     }
 
@@ -248,7 +279,7 @@ int RknnDetector::inferAndDraw(unsigned char *img_data, int img_width, int img_h
     drm_buf = drm_buf_alloc_fix(&m_drm_ctx, m_drm_fd, img_width, img_height, img_channel * 8, &buf_fd, &handle, &actual_size);
     if (!drm_buf)
     {
-        printf("ERROR: drm_buf_alloc failed.\n");
+        log_error("drm_buf_alloc_fix failed.");
         return -1;
     }
     memcpy(drm_buf, img_data, img_width * img_height * img_channel);
@@ -268,7 +299,7 @@ int RknnDetector::inferAndDraw(unsigned char *img_data, int img_width, int img_h
     int ret = rknn_inputs_set(m_ctx, m_io_num.n_input, inputs);
     if (ret < 0)
     {
-        printf("rknn_inputs_set error ret=%d\n", ret);
+        log_error("rknn_inputs_set error");
         drm_buf_destroy_fix(&m_drm_ctx, m_drm_fd, buf_fd, handle, drm_buf, actual_size);
         return -1;
     }
@@ -277,7 +308,7 @@ int RknnDetector::inferAndDraw(unsigned char *img_data, int img_width, int img_h
     ret = rknn_run(m_ctx, NULL);
     if (ret < 0)
     {
-        printf("rknn_run error ret=%d\n", ret);
+        log_error("rknn_run error");
         drm_buf_destroy_fix(&m_drm_ctx, m_drm_fd, buf_fd, handle, drm_buf, actual_size);
         return -1;
     }
@@ -292,7 +323,7 @@ int RknnDetector::inferAndDraw(unsigned char *img_data, int img_width, int img_h
     ret = rknn_outputs_get(m_ctx, m_io_num.n_output, outputs, NULL);
     if (ret < 0)
     {
-        printf("rknn_outputs_get error ret=%d\n", ret);
+        log_error("rknn_outputs_get error");
         drm_buf_destroy_fix(&m_drm_ctx, m_drm_fd, buf_fd, handle, drm_buf, actual_size);
         return -1;
     }
@@ -315,8 +346,7 @@ int RknnDetector::inferAndDraw(unsigned char *img_data, int img_width, int img_h
     {
         detect_result_t *det_result = &(detect_result_group.results[i]);
 
-        printf("\n------------------------------------------\n");
-        printf("%s @ (%d %d %d %d) %f\n",
+        printf("\n-----------------------------------检测到%s @ (%d %d %d %d) 置信度为:%f-----------------------------------------\n",
                det_result->name,
                det_result->box.left, det_result->box.top, det_result->box.right, det_result->box.bottom,
                det_result->prop);
@@ -326,6 +356,10 @@ int RknnDetector::inferAndDraw(unsigned char *img_data, int img_width, int img_h
         int y2 = det_result->box.bottom;
 
         draw_on_rgb888(img_data, img_width, img_height, x1, y1, x2, y2, det_result->name);
+
+        // todo 针对检测结果做其他处理  此处仅作写入文件处理
+        writeRGBToFile(img_data, 1920, 1080);
+
     }
 
     // 释放本次推理的资源

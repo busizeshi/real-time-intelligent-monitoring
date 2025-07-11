@@ -1,0 +1,3 @@
+/home/jwd/development/project_demo/real-time-intelligent-monitoring/test/build/CMakeFiles/edit_cache.dir
+/home/jwd/development/project_demo/real-time-intelligent-monitoring/test/build/CMakeFiles/rebuild_cache.dir
+/home/jwd/development/project_demo/real-time-intelligent-monitoring/test/build/CMakeFiles/project_test.dir

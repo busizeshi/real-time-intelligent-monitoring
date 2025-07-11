@@ -10,6 +10,7 @@
 #include "postprocess.h"
 #include "drm_func.h"
 #include "rga_func.h"
+#include "logger.h"
 
 #include "opencv2/opencv.hpp"
 

@@ -46,12 +46,12 @@ int rkmedia_init()
     venc_chn_attr.stVencAttr.u32PicHeight = u32Height;
     venc_chn_attr.stVencAttr.u32VirWidth = u32Width;
     venc_chn_attr.stVencAttr.u32VirHeight = u32Height;
-    venc_chn_attr.stVencAttr.imageType = IMAGE_TYPE_BGR888;
+    venc_chn_attr.stVencAttr.imageType = IMAGE_TYPE_NV12;
     venc_chn_attr.stVencAttr.enType = RK_CODEC_TYPE_H264;
     venc_chn_attr.stVencAttr.u32Profile = 77;
     venc_chn_attr.stRcAttr.enRcMode = VENC_RC_MODE_H264CBR;
-    venc_chn_attr.stRcAttr.stH264Cbr.u32Gop = 2 * fps;
-    venc_chn_attr.stRcAttr.stH264Cbr.u32BitRate = u32Width * u32Height;
+    venc_chn_attr.stRcAttr.stH264Cbr.u32Gop = 3 * fps;
+    venc_chn_attr.stRcAttr.stH264Cbr.u32BitRate = u32Width * u32Height * fps / 14;
     venc_chn_attr.stRcAttr.stH264Cbr.fr32DstFrameRateDen = 1;
     venc_chn_attr.stRcAttr.stH264Cbr.fr32DstFrameRateNum = fps;
     venc_chn_attr.stRcAttr.stH264Cbr.u32SrcFrameRateDen = 1;
@@ -67,7 +67,7 @@ int rkmedia_init()
     vi_chn_attr.u32BufCnt = 3;
     vi_chn_attr.u32Width = u32Width;
     vi_chn_attr.u32Height = u32Height;
-    vi_chn_attr.enPixFmt = IMAGE_TYPE_BGR888;
+    vi_chn_attr.enPixFmt = IMAGE_TYPE_NV12;
     vi_chn_attr.enWorkMode = VI_WORK_MODE_NORMAL;
     vi_chn_attr.enBufType = VI_CHN_BUF_TYPE_MMAP;
     ret = RK_MPI_VI_SetChnAttr(s32CamId, 0, &vi_chn_attr);

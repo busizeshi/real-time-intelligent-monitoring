@@ -1,63 +1,50 @@
 #include "rknn_yolo.h"
+#include "logger.h"
 
 extern "C"
 {
 #include "rkmedia_vi_venc.h"
 #include "rtsp_push.h"
+#include "tools.h"
 }
+
+#define INTERVAL_MS 15
+#define HEIGHT 1080
+#define WIDTH 1920
+#define log_file_path "../log.txt"
 
 bool quit;
 
 static RTSPPusher *pusher;
 
-static RknnDetector *detector;
-
 static TSBuffer buffer;
 
-static int count = 0;
+static RknnDetector *detector;
 
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
-static void sigterm_handler(int sig)
+void *detect_func(void *args)
 {
-    fprintf(stderr, "signal %d\n", sig);
-    quit = true;
-}
-
-int venc_start()
-{
-    RK_U32 u32FrameId = 0;
-    RK_S32 s32ReadSize = 0;
-    // RK_U64 u64TimePeriod = 1000000 / fps; // us
-    RK_U64 u64TimePeriod = 0; // us
-    MB_IMAGE_INFO_S stImageInfo = {u32Width, u32Height, u32Width, u32Height,
-                                   IMAGE_TYPE_RGB888};
-
     while (!quit)
     {
-        MEDIA_BUFFER mb =
-            RK_MPI_MB_CreateImageBuffer(&stImageInfo, RK_TRUE, MB_FLAG_NOCACHED); // 用于分配一块用于存放图像帧的缓冲区
-        if (!mb)
-        {
-            printf("ERROR: no space left!\n");
-            break;
-        }
-
-        size_t n = u32Height * u32Width * 3;
-
-        tsbuffer_read(&buffer, (unsigned char *)RK_MPI_MB_GetPtr(mb), n);
-
-        RK_MPI_MB_SetSize(mb, u32Width * u32Height * 3);
-        RK_MPI_MB_SetTimestamp(mb, u32FrameId * u64TimePeriod);
-        printf("#Send frame[%d] fd=%d to out...\n", u32FrameId++,
-               RK_MPI_MB_GetFD(mb));
-        RK_MPI_SYS_SendMediaBuffer(RK_ID_VENC, 0, mb);
-        // mb must be release. The encoder has internal references to the data sent
-        // in. Therefore, mb cannot be reused directly
-        RK_MPI_MB_ReleaseBuffer(mb);
-
-        usleep(u64TimePeriod);
+        unsigned char *buf = (unsigned char *)malloc(WIDTH * HEIGHT * 3 / 2);
+        unsigned char *rgb = (unsigned char *)malloc(WIDTH * HEIGHT * 3);
+        size_t n = tsbuffer_read(&buffer, buf, WIDTH * HEIGHT * 3 / 2);
+        nv12_to_rgb888(buf, rgb, WIDTH, HEIGHT);
+        detector->inferAndDraw(rgb, WIDTH, HEIGHT);
+        free(buf);
+        free(rgb);
     }
+}
+
+static void sigterm_handler(int sig)
+{
+    close_logger();
+    rkmedia_deinit();
+    rtsp_pusher_close(pusher);
+    tsbuffer_destroy(&buffer);
+    fprintf(stderr, "signal %d\n", sig);
+    quit = true;
 }
 
 /**
@@ -65,47 +52,44 @@ int venc_start()
  *
  * @param args 接收参数
  */
-void *collectMpiBuffer(void *args)
+void *collectMpiAndDector(void *args)
 {
     MEDIA_BUFFER mb = NULL;
 
+    long long last_time = get_time_ms();
+
     while (!quit)
     {
-        pthread_mutex_lock(&lock);
-        printf("--------------------------------采集中-----------------------------\n");
         mb = RK_MPI_SYS_GetMediaBuffer(RK_ID_VI, 0, -1);
         if (!mb)
         {
-            printf("RK_MPI_SYS_GetMediaBuffer get null buffer!\n");
+            log_error("RK_MPI_SYS_GetMediaBuffer get null buffer!");
             break;
         }
 
-        MB_IMAGE_INFO_S stImageInfo = {0};
-        int ret = RK_MPI_MB_GetImageInfo(mb, &stImageInfo);
-        if (ret)
-            printf("Warn: Get image info failed! ret = %d\n", ret);
+        long long now = get_time_ms();
 
-        printf("\n\nGet Frame:ptr:%p, fd:%d, size:%zu, mode:%d, channel:%d, "
-               "timestamp:%lld, ImgInfo:<wxh %dx%d, fmt 0x%x>\n\n",
-               RK_MPI_MB_GetPtr(mb), RK_MPI_MB_GetFD(mb), RK_MPI_MB_GetSize(mb),
-               RK_MPI_MB_GetModeID(mb), RK_MPI_MB_GetChannelID(mb),
-               RK_MPI_MB_GetTimestamp(mb), stImageInfo.u32Width,
-               stImageInfo.u32Height, stImageInfo.enImgType);
+        char time_str[64];
+        get_time_str(now, time_str, 64);
+        // printf("当前获取帧的时间是%s\n", time_str);
+        if (now - last_time >= INTERVAL_MS)
+        {
+            last_time += INTERVAL_MS;
 
-        printf("正在检测......\n");
-        detector->inferAndDraw((unsigned char *)RK_MPI_MB_GetPtr(mb), 1920, 1080);
+            tsbuffer_write(&buffer, (unsigned char *)RK_MPI_MB_GetPtr(mb), WIDTH * HEIGHT * 3 / 2);
+        }
 
-        tsbuffer_write(&buffer, (unsigned char *)RK_MPI_MB_GetPtr(mb), 1920 * 1080 * 3);
+        RK_MPI_MB_SetSize(mb, WIDTH * HEIGHT * 3 / 2);
+
+        RK_MPI_SYS_SendMediaBuffer(RK_ID_VENC, 0, mb);
         RK_MPI_MB_ReleaseBuffer(mb);
-        printf("--------------------------------采集完成-----------------------------\n");
-        pthread_mutex_unlock(&lock);
     }
 
     return NULL;
 }
 
 /**
- * @brief 编码rgb888帧数据
+ * @brief 编码rgb888帧数据为h264数据并推流
  */
 static void *encodeRgb888ToH264(void *arg)
 {
@@ -113,8 +97,6 @@ static void *encodeRgb888ToH264(void *arg)
     MEDIA_BUFFER mb = NULL;
     while (!quit)
     {
-        pthread_mutex_lock(&lock);
-        printf("--------------------------------推流中-----------------------------\n");
         mb = RK_MPI_SYS_GetMediaBuffer(RK_ID_VENC, 0, -1);
         if (!mb)
         {
@@ -122,11 +104,7 @@ static void *encodeRgb888ToH264(void *arg)
             break;
         }
 
-        printf("Get packet:ptr:%p, fd:%d, size:%zu, mode:%d, channel:%d, "
-               "timestamp:%lld\n",
-               RK_MPI_MB_GetPtr(mb), RK_MPI_MB_GetFD(mb), RK_MPI_MB_GetSize(mb),
-               RK_MPI_MB_GetModeID(mb), RK_MPI_MB_GetChannelID(mb),
-               RK_MPI_MB_GetTimestamp(mb));
+        printf("编码时间为%lld ms\n", RK_MPI_MB_GetTimestamp(mb));
         if (rtsp_pusher_push_frame(pusher, (unsigned char *)RK_MPI_MB_GetPtr(mb), RK_MPI_MB_GetSize(mb)) < 0)
         {
             fprintf(stderr, "Failed to push frame, exiting.\n");
@@ -134,8 +112,6 @@ static void *encodeRgb888ToH264(void *arg)
         }
 
         RK_MPI_MB_ReleaseBuffer(mb);
-        printf("--------------------------------推流完成-----------------------------\n");
-        pthread_mutex_unlock(&lock);
     }
 
     return NULL;
@@ -143,48 +119,63 @@ static void *encodeRgb888ToH264(void *arg)
 
 int main(int argc, char *argv[])
 {
+    if (argc < 3)
+    {
+        log_warn("缺少参数");
+    }
+
+    char *rtsp_url = argv[1];
+    printf("rtsp_url: %s\n", rtsp_url);
+    char *model_path = argv[2];
+    printf("model_path: %s\n", model_path);
+
     signal(SIGINT, sigterm_handler);
 
     // 初始化相关变量
     int ret = 0;
     quit = false;
 
+    init_logger(log_file_path);
+
+    tsbuffer_init(&buffer, WIDTH * HEIGHT * 3 * 20);
+
     // rkmedia初始化
     ret = rkmedia_init();
     if (ret)
     {
-        printf("rkmedia_init failed!\n");
+        log_error("rkmedia_init failed!");
         return -1;
     }
     // rtsp推流器初始化
-    pusher = rtsp_pusher_init("rtsp://192.168.1.10/live/stream", u32Width, u32Height, 60);
+    pusher = rtsp_pusher_init(rtsp_url, WIDTH, HEIGHT, 30);
     // 目标检测初始化
-    detector = new RknnDetector("/userdata/rknn_yolov5_demo/model/rv1109_rv1126/yolov5s_relu_rv1109_rv1126_out_opt.rknn");
+    detector = new RknnDetector(model_path);
     if (!detector->isInitialized())
     {
-        std::cerr << "ERROR: Failed to initialize RknnDetector." << std::endl;
+        log_error("Failed to initialize RknnDetector.");
         return -1;
     }
 
-    tsbuffer_init(&buffer, 1024 * 1920 * 3 * 10);
-
-    printf("开始采集数据\n");
+    log_info("开始采集数据");
     pthread_t collect_thread;
-    pthread_create(&collect_thread, NULL, collectMpiBuffer, NULL);
+    pthread_create(&collect_thread, NULL, collectMpiAndDector, NULL);
     ret = mpi_vi_start();
 
-    printf("开始推流\n");
+    log_info("开始编码推流");
     pthread_t push_thread;
     pthread_create(&push_thread, NULL, encodeRgb888ToH264, NULL);
-    venc_start();
+
+    log_info("开始检测");
+    pthread_t detect_thread;
+    pthread_create(&detect_thread, NULL, detect_func, detector);
 
     while (!quit)
     {
         usleep(500000);
     }
-    rkmedia_deinit();
-    rtsp_pusher_close(pusher);
-    tsbuffer_destroy(&buffer);
+    pthread_join(detect_thread, NULL);
+    pthread_join(push_thread, NULL);
+    pthread_join(collect_thread, NULL);
 
     return 0;
 }
